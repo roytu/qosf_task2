@@ -2,8 +2,6 @@
 QOSF Task 2
 ===============
 
-# Overview
-
 My attempt at a solution for Task 2 of the screening process for QOSF's mentorship program.
 
 # Problem
@@ -26,17 +24,17 @@ Compare the results for different numbers of measurements: 1, 10, 100, 1000.
 
 The actual problem statement requires us to use sampling to figure out the parameters, but we may be able to analyze this theoretically to guide us in our search for an appropriate ansatz.  Starting from a vector of |0> qubits, we would like to generate |01> + |10>.  Below is the simplest way to do this:
 
-TODO circuit drawing
+![A simple circuit to generate |01> + |10>](./images/theoretical.png)
 
-We can replace X = Ry(pi/2) and Y = Rx(pi) to meet the gate constraints provided.  All in all, this suggests the following ansatz:
+We can replace H = Ry(pi/2) and X = Rx(pi) to meet the gate constraints provided (up to a global phase).  All in all, this suggests the following ansatz:
 
-TODO ansatz
+![Our ansatz for the optimizer](./images/ansatz.png)
 
 There are some degeneracies for which values of theta give the correct probability distribution, but we expect `theta_y` to be some half-integer of pi, and `theta_x` to be some odd integer of pi.
 
 ## Experiment
 
-Now that we have the ansatz, we can use Qiskit to find the actual parameters.  The Qiskit textbook[^qiskit-spsa] suggests SPSA for simulations with noise, so we'll use that.  Qiskit also ships with noise models derived from various IBMQ computers, so we randomly pick one derived from the IBM VIgo here.
+Now that we have the ansatz, we can use Qiskit to find the actual parameters.  The Qiskit textbook[^1] suggests SPSA for simulations with noise, so we'll use that.  Qiskit also ships with noise models derived from various IBMQ computers, so we randomly pick one derived from the IBM VIgo here.
 
 ```py
     # Get noise model
@@ -93,7 +91,7 @@ Remember that we expect half-integer multiples of pi for `theta_y` and odd integ
 
 If we plot the costs over time (see `diagrams.py`) we get the following:
 
-![TODO image]
+![Costs over time for different M](./images/costs.png)
 
 M=1 never even attempts to converge, whereas the other trials reach steady-state after 100 iterations or so, with larger M values demonstrating better results.
 
@@ -101,11 +99,8 @@ M=1 never even attempts to converge, whereas the other trials reach steady-state
 
 Bonus question:
 
-How to make sure you produce state |01> + |10> and not |01> - |10> ?
-(Actually for more careful readers, the “correct” version of this question is posted below:
+    How to make sure you produce state |01> + |10> and not |01> - |10> ?
 
-How to make sure you produce state |01⟩ + |10⟩ and not any other combination of |01> + e(i*phi)|10⟩ (for example |01⟩ - |10⟩)?)
+TODO need to think about this some more
 
-# Footnotes
-
-[^qiskit-spsa]: <https://qiskit.org/textbook/ch-applications/vqe-molecules.html#Parameter-Optimization>
+[^1]: <https://qiskit.org/textbook/ch-applications/vqe-molecules.html#Parameter-Optimization>
