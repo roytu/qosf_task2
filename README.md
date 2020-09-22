@@ -105,7 +105,7 @@ If we ignore gate errors, then depending on `theta_y`, the `R_y` gate can transf
 
 A (maybe somewhat clumsy) method is with the following modified ansatz:
 
-![Modified ansatz, with a "spy" circuit](./images/bonuz_ansatz.png)
+![Modified ansatz, with a "spy" circuit](./images/bonus_ansatz.png)
 
 We add a third qubit (initialized as |0>), as well as two Hadamard gates and a CNOT gate.  The idea behind this circuit is to act as a "spy" that copies the state of the second qubit without perturbing it.  We know the following properties of the Hadamard gate:
 
