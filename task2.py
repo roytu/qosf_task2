@@ -152,6 +152,30 @@ class Task2:
 
         return qc
 
+    def bonus_ansatz(self):
+        """ Creates the following QC:
+                                ┌───┐           ░ ┌─┐
+           |0>: ────────────────┤ X ├───────────░─┤M├──────
+                ┌─────────┐┌───┐└─┬─┘┌───┐      ░ └╥┘┌─┐
+           |0>: ┤ RY(θ_y) ├┤ H ├──■──┤ H ├──■───░──╫─┤M├───
+                ├─────────┤└───┘     └───┘┌─┴─┐ ░  ║ └╥┘┌─┐
+           |0>: ┤ RX(θ_x) ├───────────────┤ X ├─░──╫──╫─┤M├
+                └─────────┘               └───┘ ░  ║  ║ └╥┘
+        meas: 3/═══════════════════════════════════╩══╩══╩═
+        """
+
+        qc = QuantumCircuit(3)
+        qc.ry(self.py, 1)
+        qc.h(1)
+        qc.cx(1, 0)
+        qc.h(1)
+        qc.rx(self.px, 2)
+        qc.cnot(1, 2)
+        qc.measure_all()
+
+        return qc
+
+
     def show(self):
         """ Show circuit for debugging purposes
         """

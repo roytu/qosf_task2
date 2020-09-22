@@ -101,6 +101,19 @@ Bonus question:
 
     How to make sure you produce state |01> + |10> and not |01> - |10> ?
 
-TODO need to think about this some more
+If we ignore gate errors, then depending on `theta_y`, the `R_y` gate can transform the initial |0> qubit into either |0> + |1> or |0> - |1> (ignoring global phase).  Other states are already penalized with the optimization strategy given above, so we only need to distinguish between these two states.
+
+A (maybe somewhat clumsy) method is with the following modified ansatz:
+
+![Modified ansatz, with a "spy" circuit](./images/bonuz_ansatz.png)
+
+We add a third qubit (initialized as |0>), as well as two Hadamard gates and a CNOT gate.  The idea behind this circuit is to act as a "spy" that copies the state of the second qubit without perturbing it.  We know the following properties of the Hadamard gate:
+
+```
+    H ( |0> + |1> ) = |0>
+    H ( |0> - |1> ) = |1>
+```
+
+as well as the identity `H^2 = I`.  Because of this identity, the second qubit is left unchanged.  Meanwhile, the top-most qubit will be |0> if |0> + |1> was produced, and |1> if |0> - |1>.  The cost function for the classical optimizer can be adjusted to penalize states wher e the top-most qubit measures anything non-zero.
 
 [^1]: <https://qiskit.org/textbook/ch-applications/vqe-molecules.html#Parameter-Optimization>
